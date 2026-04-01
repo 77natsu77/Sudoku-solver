@@ -4,36 +4,43 @@ namespace SudokuSolverProject.Algorithms;
 public class SudokuSolver
 {
     public int BacktrackCounter {get; private set;} = 0;
-    public bool Solve(SudokuBoard board)
+    private readonly Random _rng = new Random();
+    public bool Solve(SudokuBoard board, bool randomize = false)
 {
-    // 1. BASE CASE: Find the next empty cell
-    if (!board.FindEmptyCell(out int row, out int col))
-    {
-        return true; // No empty cells? We won! Pass the signal up.
-    }
+    //BASE CASE: finding next empty cell
+    if (!board.FindEmptyCell(out int row, out int col)) return true;
 
-    // 2. TRY POSSIBILITIES: 1 through 9
-    for (int num = 1; num <= 9; num++)
+    List<int> numbers = Enumerable.Range(1, 9).ToList();
+
+    //Shuffle them if randomization is requested
+    if (randomize)
     {
-        if (board.IsValid(row, col, num))
+        //numbers = numbers.OrderBy(x => _rng.Next()).ToList();
+        //Used Fisher yates shuffle for O(n) complexity rather than LINQ
+        for (int i = numbers.Count() - 1; i > 0; i--) 
         {
-            // Try this number
-            board.SetValue(row, col, num);
-
-            // 3. RECURSION: Ask the "future" if this choice works
-            if (Solve(board)) 
-            {
-                return true; // The future said yes! Pass success back.
-            }
-
-            // 4. BACKTRACK: The future said no. Undo and try next 'num'
-            board.SetValue(row, col, 0);
+            
+            // Pick a random index
+            // from 0 to i
+            int j = _rng.Next(0, i+1);
+            
+            // Swap arr[i] with the
+            // element at random index
+            int temp = numbers[i];
+            numbers[i] = numbers[j];
+            numbers[j] = temp;
         }
     }
 
-    // 5. FAILURE: Tried 1-9 and none worked. 
-    // This triggers the "Undo" in the previous call.
-    BacktrackCounter++;
-    return false; 
+    foreach (int num in numbers)
+    {
+        if (board.IsValid(row, col, num))//Try out this number
+        {
+            board.SetValue(row, col, num);
+            if (Solve(board, randomize)) return true; //Ask the future version if htis chocie works
+            board.SetValue(row, col, 0); // future said no, try other value (backtrack)
+        }
+    }
+    return false;
 }
 }
