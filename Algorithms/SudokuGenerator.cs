@@ -43,9 +43,10 @@ public class SudokuGenerator
 
                 // Optimization: If we found 2 solutions, we already know 
                 // the puzzle is invalid. No need to find all 500+ solutions.
+                 board.SetValue(row, col, 0); // Backtrack
                 if (count >= limit) return true; 
 
-                board.SetValue(row, col, 0); // Backtrack
+               
             }
         }
         return false;

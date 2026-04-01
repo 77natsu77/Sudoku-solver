@@ -22,7 +22,7 @@ public class SudokuSolver
     {
         //numbers = numbers.OrderBy(x => _rng.Next()).ToList();
         //Used Fisher yates shuffle for O(n) complexity rather than LINQ
-        for (int i = numbers.Count() - 1; i > 0; i--) 
+        for (int i = numbers.Count - 1; i > 0; i--) 
         {
             
             // Pick a random index
