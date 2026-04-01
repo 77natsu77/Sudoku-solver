@@ -9,8 +9,8 @@ public static class BoardRenderer
    static public void Draw(SudokuBoard board)
     {
         StringBuilder output = new StringBuilder();
-        string heavyDivider = "+=============+============+============+";
-        string lightDivider = "+-------------+------------+------------+";
+        string heavyDivider = "+================+===============+===============+";
+        string lightDivider = "+----------------+---------------+---------------+";
 
         for (int row = 0; row < 9; row++)
         {

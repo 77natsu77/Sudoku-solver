@@ -4,7 +4,12 @@ namespace SudokuSolverProject.Algorithms;
 public class SudokuSolver
 {
     public int BacktrackCounter {get; private set;} = 0;
-    private readonly Random _rng = new Random();
+    private readonly Random _rng;
+
+    public SudokuSolver(Random? r = null)
+    {
+        _rng = r == null ? new Random() : r;
+    }
     public bool Solve(SudokuBoard board, bool randomize = false)
 {
     //BASE CASE: finding next empty cell
@@ -39,6 +44,7 @@ public class SudokuSolver
             board.SetValue(row, col, num);
             if (Solve(board, randomize)) return true; //Ask the future version if htis chocie works
             board.SetValue(row, col, 0); // future said no, try other value (backtrack)
+            BacktrackCounter++;
         }
     }
     return false;

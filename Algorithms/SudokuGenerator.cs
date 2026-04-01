@@ -5,9 +5,16 @@ namespace SudokuSolverProject.Algorithms;
 public class SudokuGenerator
 {
 
-    private readonly SudokuSolver _solver = new SudokuSolver();
-    private readonly Random _rng = new Random();
-    
+    private readonly SudokuSolver _solver;
+    private readonly Random _rng;
+    public SudokuGenerator(string? seed = null)
+    {
+        int seedHash = seed?.GetHashCode() ?? DateTime.Now.Ticks.GetHashCode();
+        _rng = new Random(seedHash);
+        
+        // Pass the rng to the solver so its shuffling is also tied to the seed
+        _solver = new SudokuSolver(_rng); 
+    }
 
     private int CountSolutions(SudokuBoard board, int limit = 2)
     {
@@ -44,17 +51,15 @@ public class SudokuGenerator
         return false;
     }
 
-    public SudokuBoard Generate(int cellsToRemove)
+    public SudokuBoard Generate(int cellsToRemove, int ConsecutiveTriesLimit = 4000)
     {
-        int ConsecutiveTries = 0;
-        SudokuBoard board = new SudokuBoard(new int[9, 9]);
 
-  
+        SudokuBoard board = new SudokuBoard(new int[9, 9]);
         _solver.Solve(board, randomize: true);
 
-
+        int ConsecutiveTries = 0;
         int removed = 0;
-        while (removed < cellsToRemove && ConsecutiveTries < 100)
+        while (removed < cellsToRemove && ConsecutiveTries < ConsecutiveTriesLimit)
         {
             int r = _rng.Next(9);
             int c = _rng.Next(9);

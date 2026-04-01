@@ -17,8 +17,13 @@ int[,] challenge = {
 };
 
 
-SudokuBoard board = new SudokuBoard(challenge);
+
+SudokuGenerator generator = new SudokuGenerator();
 SudokuSolver solver = new SudokuSolver();
+
+//SudokuBoard board = generator.Generate(30); //Easy mode
+SudokuBoard board = generator.Generate(60,100); //Hard mode
+
 
 Console.WriteLine("--- UNSOLVED ---");
 BoardRenderer.Draw(board);

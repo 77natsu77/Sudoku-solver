@@ -12,3 +12,4 @@
 /home/jomiloju/vs code projects/SudokuSolverProject/obj/Debug/net8.0/SudokuSolverProject.pdb
 /home/jomiloju/vs code projects/SudokuSolverProject/obj/Debug/net8.0/SudokuSolverProject.genruntimeconfig.cache
 /home/jomiloju/vs code projects/SudokuSolverProject/obj/Debug/net8.0/ref/SudokuSolverProject.dll
+/home/jomiloju/vs code projects/SudokuSolverProject/obj/Debug/net8.0/SudokuSolverProject.sourcelink.json
