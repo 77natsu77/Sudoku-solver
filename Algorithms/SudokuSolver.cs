@@ -3,7 +3,7 @@ namespace SudokuSolverProject.Algorithms;
 
 public class SudokuSolver
 {
-    public int BacktrackCounter {get; private set;} = 0;
+    public int BacktrackCounter {get; private set;}
     private readonly Random _rng;
 
     public SudokuSolver(Random? r = null)
@@ -12,6 +12,7 @@ public class SudokuSolver
     }
     public bool Solve(SudokuBoard board, bool randomize = false)
 {
+    BacktrackCounter = 0;
     //BASE CASE: finding next empty cell
     if (!board.FindEmptyCell(out int row, out int col)) return true;
 
@@ -39,9 +40,9 @@ public class SudokuSolver
 
     foreach (int num in numbers)
     {
-        if (board.IsValid(row, col, num))//Try out this number
+        if (board.IsValid(row, col, num))//Check if it is  possible at the moment
         {
-            board.SetValue(row, col, num);
+            board.SetValue(row, col, num);//Try out this number
             if (Solve(board, randomize)) return true; //Ask the future version if htis chocie works
             board.SetValue(row, col, 0); // future said no, try other value (backtrack)
             BacktrackCounter++;
@@ -49,4 +50,6 @@ public class SudokuSolver
     }
     return false;
 }
+
+    
 }

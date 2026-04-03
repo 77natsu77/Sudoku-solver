@@ -2,26 +2,34 @@
 using SudokuSolverProject.Algorithms;
 using SudokuSolverProject.Core;
 
-const int ROWS = 9, COLUMNS = 9;
-int[,] blankgrid = new int[ROWS,COLUMNS];
-int[,] challenge = {
-    { 5, 3, 0, 0, 7, 0, 0, 0, 0 },
-    { 6, 0, 0, 1, 9, 5, 0, 0, 0 },
-    { 0, 9, 8, 0, 0, 0, 0, 6, 0 },
-    { 8, 0, 0, 0, 6, 0, 0, 0, 3 },
-    { 4, 0, 0, 8, 0, 3, 0, 0, 1 },
-    { 7, 0, 0, 0, 2, 0, 0, 0, 6 },
-    { 0, 6, 0, 0, 0, 0, 2, 8, 0 },
-    { 0, 0, 0, 4, 1, 9, 0, 0, 5 },
-    { 0, 0, 0, 0, 8, 0, 0, 7, 9 }
-};
-
-
-
-SudokuGenerator generator = new SudokuGenerator();
 SudokuSolver solver = new SudokuSolver();
+SudokuBoard board;
 
-SudokuBoard board = generator.Generate(30); //Easy mode
+Console.WriteLine("Enter a Seed (or press Enter for random)");
+SudokuGenerator generator = new SudokuGenerator(Console.ReadLine());
+Console.WriteLine("Enter a Difficulty (1 = Easy, 2 = Medium, 3 = Hard).");
+
+int difficulty = 0;
+int.TryParse(Console.ReadLine(), out difficulty);
+switch(difficulty)
+{
+    case 1:
+        board = generator.Generate(30);
+        break;
+    case 2:
+        board = generator.Generate(45);
+        break;
+    case 3:
+        board = generator.Generate(60);
+        break;
+    default:
+        Console.WriteLine("Invalid option entered, generating easy difficult by defualt.");
+        board = generator.Generate(30);
+        break;
+}
+
+
+ //Easy mode 
 //SudokuBoard board = generator.Generate(60,100); //Hard mode
 
 

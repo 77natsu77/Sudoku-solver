@@ -52,7 +52,7 @@ public class SudokuGenerator
         return false;
     }
 
-    public SudokuBoard Generate(int cellsToRemove, int ConsecutiveTriesLimit = 4000)
+    public SudokuBoard Generate(int cellsToRemove, int ConsecutiveTriesLimit = 100)
     {
 
         SudokuBoard board = new SudokuBoard(new int[9, 9]);
@@ -60,11 +60,10 @@ public class SudokuGenerator
 
         int ConsecutiveTries = 0;
         int removed = 0;
-        while (removed < cellsToRemove && ConsecutiveTries < ConsecutiveTriesLimit)
+        var coords = Shuffle(GetAllCoordinates());
+        foreach (var (r, c) in coords)
         {
-            int r = _rng.Next(9);
-            int c = _rng.Next(9);
-
+            if  (!(removed < cellsToRemove) || !(ConsecutiveTries < ConsecutiveTriesLimit)) break;
             if (board.GetValue(r, c) != 0)
             {
                 int backup = board.GetValue(r, c);
@@ -75,7 +74,7 @@ public class SudokuGenerator
                 {
                     // If removing it made the puzzle ambiguous, put it back!
                     board.SetValue(r, c, backup);
-                    ConsecutiveTries += 1;
+                    ConsecutiveTries++;
                 }
                 else
                 {
@@ -85,5 +84,36 @@ public class SudokuGenerator
             }
         }
         return board;
+    }
+
+    private List<(int,int)> GetAllCoordinates()
+    {
+        List<(int,int)> coords = new List<(int,int)>();
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                coords.Add((i,j));
+            }
+        }
+        return coords;
+    }
+
+    private List<(int,int)> Shuffle(List<(int,int)> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--) 
+        {
+            
+            // Pick a random index
+            // from 0 to i
+            int j = _rng.Next(0, i+1);
+            
+            // Swap arr[i] with the
+            // element at random index
+            (int,int) temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
+        return list;
     }
 }
